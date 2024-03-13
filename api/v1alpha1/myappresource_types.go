@@ -23,20 +23,32 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+type image struct {
+	Repository string `json:"repository"`
+	Tag        string `json:"tag"`
+}
+
+type resources struct {
+	MemoryLimit string `json:"memoryLimit"`
+	CpuReuest   string `json:"cpuRequest"`
+}
+
+type ui struct {
+	Color   string `json:"color"`
+	Message string `json:"message"`
+}
+
+type redis struct {
+	Enabled bool `json:"enabled"`
+}
+
 // MyAppResourceSpec defines the desired state of MyAppResource
 type MyAppResourceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	Name            string `json:"name"`
-	ReplicaCount    int    `json:"replicacount"`
-	MemoryLimit     string `json:"memorylimit"`
-	CpuLimit        string `json:"cpulimit"`
-	ImageRepository string `json:"imagerepository"`
-	ImageTag        string `json:"imagetag"`
-	UiColor         string `json:"uicolor"`
-	UiMessage       string `json:"uimessage"`
-	RedisEnabled    bool   `json:"redisenabled"`
+	ReplicaCount int       `json:"replicaCount"`
+	Image        image     `json:"image"`
+	Resources    resources `json:"resources"`
+	UI           ui        `json:"ui"`
+	Redis        redis     `json:"redis"`
 }
 
 // MyAppResourceStatus defines the observed state of MyAppResource
