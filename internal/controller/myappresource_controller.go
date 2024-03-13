@@ -33,9 +33,9 @@ type MyAppResourceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/finalizers,verbs=update
+//+kubebuilder:rbac:groups=my.api.group.my.domain,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=my.api.group.my.domain,resources=myappresources/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=my.api.group.my.domain,resources=myappresources/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -48,8 +48,6 @@ type MyAppResourceReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.17.0/pkg/reconcile
 func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
-
-	// TODO(user): your logic here
 
 	return ctrl.Result{}, nil
 }

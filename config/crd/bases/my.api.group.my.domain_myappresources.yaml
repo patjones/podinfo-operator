@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: myappresources.my.api.group.patjones.io
+  name: myappresources.my.api.group.my.domain
 spec:
-  group: my.api.group.patjones.io
+  group: my.api.group.my.domain
   names:
     kind: MyAppResource
     listKind: MyAppResourceList
@@ -39,10 +39,34 @@ spec:
           spec:
             description: MyAppResourceSpec defines the desired state of MyAppResource
             properties:
-              foo:
-                description: Foo is an example field of MyAppResource. Edit myappresource_types.go
-                  to remove/update
+              cpulimit:
                 type: string
+              imagerepository:
+                type: string
+              imagetag:
+                type: string
+              memorylimit:
+                type: string
+              name:
+                type: string
+              redisenabled:
+                type: boolean
+              replicacount:
+                type: integer
+              uicolor:
+                type: string
+              uimessage:
+                type: string
+            required:
+            - cpulimit
+            - imagerepository
+            - imagetag
+            - memorylimit
+            - name
+            - redisenabled
+            - replicacount
+            - uicolor
+            - uimessage
             type: object
           status:
             description: MyAppResourceStatus defines the observed state of MyAppResource

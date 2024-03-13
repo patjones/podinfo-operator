@@ -28,8 +28,15 @@ type MyAppResourceSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of MyAppResource. Edit myappresource_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name            string `json:"name"`
+	ReplicaCount    int    `json:"replicacount"`
+	MemoryLimit     string `json:"memorylimit"`
+	CpuLimit        string `json:"cpulimit"`
+	ImageRepository string `json:"imagerepository"`
+	ImageTag        string `json:"imagetag"`
+	UiColor         string `json:"uicolor"`
+	UiMessage       string `json:"uimessage"`
+	RedisEnabled    bool   `json:"redisenabled"`
 }
 
 // MyAppResourceStatus defines the observed state of MyAppResource

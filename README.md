@@ -1,5 +1,5 @@
 # podinfo-operator
-An operator to install and manage [Podinfo](https://github.com/stefanprodan/podinfo)
+// TODO(user): Add simple overview of use/purpose
 
 ## Description
 // TODO(user): An in-depth paragraph about your project and overview of use
@@ -88,6 +88,9 @@ Users can just run kubectl apply -f <URL for YAML BUNDLE> to install the project
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/<org>/podinfo-operator/<tag or branch>/dist/install.yaml
 ```
+
+## Contributing
+// TODO(user): Add detailed information on how you would like others to contribute to this project
 
 **NOTE:** Run `make help` for more information on all potential `make` targets
 
