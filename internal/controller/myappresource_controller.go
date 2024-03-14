@@ -41,7 +41,9 @@ type MyAppResourceReconciler struct {
 
 func createDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *appsv1.Deployment {
 	labels := map[string]string{
-		"app": myappresource.Name,
+		"app":                          myappresource.Name,
+		"app.kubernetes.io/name":       myappresource.Name,
+		"app.kubernetes.io/managed-by": "podinfo-operator",
 	}
 
 	// ...
@@ -116,10 +118,12 @@ func createDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyAppRes
 func createService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *corev1.Service {
 
 	labels := map[string]string{
-		"app": myappresource.Name,
+		"app":                          myappresource.Name,
+		"app.kubernetes.io/name":       myappresource.Name,
+		"app.kubernetes.io/managed-by": "podinfo-operator",
 	}
 
-	service := &corev1.Service{
+	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      myappresource.Name,
 			Namespace: myappresource.Namespace,
@@ -136,7 +140,8 @@ func createService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResour
 			},
 		},
 	}
-	return service
+	ctrl.SetControllerReference(&myappresource, svc, r.Scheme)
+	return svc
 }
 
 //+kubebuilder:rbac:groups=my.api.group,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
