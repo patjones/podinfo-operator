@@ -2,7 +2,7 @@ apiVersion: my.api.group/v1alpha1
 kind: MyAppResource
 metadata:
   name: whatever
-  namespace: default
+  namespace: whatever
 spec:
   replicaCount: 2
   resources:
