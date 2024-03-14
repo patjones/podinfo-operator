@@ -44,7 +44,7 @@ type redis struct {
 
 // MyAppResourceSpec defines the desired state of MyAppResource
 type MyAppResourceSpec struct {
-	ReplicaCount int       `json:"replicaCount"`
+	ReplicaCount int32     `json:"replicaCount"`
 	Image        image     `json:"image"`
 	Resources    resources `json:"resources"`
 	UI           ui        `json:"ui"`
