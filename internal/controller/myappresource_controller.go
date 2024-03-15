@@ -380,7 +380,25 @@ func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 				}
 			}
 		}
+	} else {
+		err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &appsv1.Deployment{})
+		if err == nil {
+			log.Log.Info("Redis is disabled, cleaning up Redis resources")
+			err = r.Delete(ctx, &appsv1.Deployment{ObjectMeta: metav1.ObjectMeta{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}})
+			if err != nil {
+				log.Log.Error(err, "Error deleting Redis Deployment")
+			}
+			err = r.Delete(ctx, &corev1.Service{ObjectMeta: metav1.ObjectMeta{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}})
+			if err != nil {
+				log.Log.Error(err, "Error deleting Redis Service")
+			}
+			err = r.Delete(ctx, &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}})
+			if err != nil {
+				log.Log.Error(err, "Error deleting Redis ConfigMap")
+			}
+		}
 	}
+
 	//TODO if not enabled check redis was previously deployed and clean it up
 
 	return ctrl.Result{}, nil
