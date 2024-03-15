@@ -12,7 +12,7 @@ spec:
     repository: ghcr.io/stefanprodan/podinfo
     tag: latest
   ui:
-    color: "#34577c"
-    message: "some string"
+    color: "#34ebd8"
+    message: "hullo"
   redis:
     enabled: true

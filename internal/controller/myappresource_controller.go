@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"reflect"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -310,7 +311,19 @@ func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 			}
 			log.Log.Info("Deployment created successfully", "deployment", deployment)
 		}
+	} else {
+		log.Log.Info("Deployment already exists, checking for changes", "deployment", deployment)
+		updatedDeployment := createDeployment(myappresource, *r)
+		if !reflect.DeepEqual(deployment.Spec, updatedDeployment.Spec) {
+			deployment.Spec = updatedDeployment.Spec
+			err = r.Update(ctx, &deployment)
+			if err != nil {
+				log.Log.Error(err, "Error updating Deployment for MyAppResource", "deployment", deployment)
+			}
+			log.Log.Info("Deployment updated successfully", "deployment", deployment)
+		}
 	}
+
 	//Manage Service
 	service := corev1.Service{}
 	err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name}, &service)
@@ -325,47 +338,50 @@ func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		}
 	}
 
-	//Manage Redis Deployment
-	redisDeployment := appsv1.Deployment{}
-	err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisDeployment)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			log.Log.Info("Creating Redis Deployment", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
-			redisDeployment = *createRedisDeployment(myappresource, *r)
-			err = r.Create(ctx, &redisDeployment)
-			if err != nil {
-				log.Log.Error(err, "Error creating Deployment for Redis", "deployment", redisDeployment)
+	if myappresource.Spec.Redis.Enabled {
+		//Manage Redis Deployment
+		redisDeployment := appsv1.Deployment{}
+		err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisDeployment)
+		if err != nil {
+			if errors.IsNotFound(err) {
+				log.Log.Info("Creating Redis Deployment", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
+				redisDeployment = *createRedisDeployment(myappresource, *r)
+				err = r.Create(ctx, &redisDeployment)
+				if err != nil {
+					log.Log.Error(err, "Error creating Deployment for Redis", "deployment", redisDeployment)
+				}
 			}
 		}
-	}
 
-	//Manage Redis Service
-	redisService := corev1.Service{}
-	err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisService)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			log.Log.Info("Creating Redis Service", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
-			redisService = *createRedisService(myappresource, *r)
-			err = r.Create(ctx, &redisService)
-			if err != nil {
-				log.Log.Error(err, "Error creating Service for Redis", "service", redisService)
+		//Manage Redis Service
+		redisService := corev1.Service{}
+		err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisService)
+		if err != nil {
+			if errors.IsNotFound(err) {
+				log.Log.Info("Creating Redis Service", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
+				redisService = *createRedisService(myappresource, *r)
+				err = r.Create(ctx, &redisService)
+				if err != nil {
+					log.Log.Error(err, "Error creating Service for Redis", "service", redisService)
+				}
 			}
 		}
-	}
 
-	//Manage Redis ConfigMap
-	redisConfigMap := corev1.ConfigMap{}
-	err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisConfigMap)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			log.Log.Info("Creating Redis ConfigMap", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
-			redisConfigMap = *createRedisConfigMap(myappresource, *r)
-			err = r.Create(ctx, &redisConfigMap)
-			if err != nil {
-				log.Log.Error(err, "Error creating ConfigMap for Redis", "configmap", redisConfigMap)
+		//Manage Redis ConfigMap
+		redisConfigMap := corev1.ConfigMap{}
+		err = r.Get(ctx, client.ObjectKey{Namespace: myappresource.ObjectMeta.Namespace, Name: myappresource.ObjectMeta.Name + "-redis"}, &redisConfigMap)
+		if err != nil {
+			if errors.IsNotFound(err) {
+				log.Log.Info("Creating Redis ConfigMap", "Namespace", myappresource.ObjectMeta.Namespace, "Name", myappresource.ObjectMeta.Name+"-redis")
+				redisConfigMap = *createRedisConfigMap(myappresource, *r)
+				err = r.Create(ctx, &redisConfigMap)
+				if err != nil {
+					log.Log.Error(err, "Error creating ConfigMap for Redis", "configmap", redisConfigMap)
+				}
 			}
 		}
 	}
+	//TODO if not enabled check redis was previously deployed and clean it up
 
 	return ctrl.Result{}, nil
 }
