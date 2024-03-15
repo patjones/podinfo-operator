@@ -277,9 +277,6 @@ func createRedisConfigMap(myappresource myapigroupv1beta1.MyAppResource, r MyApp
 //+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/finalizers,verbs=update
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/finalizers,verbs=update
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;delete;create;update;patch
 // +kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;delete;create;update;patch
 // +kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;delete;create;update;patch
