@@ -1,6 +1,9 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+branch = $(shell git rev-parse --abbrev-ref HEAD)
+commit = $(shell git rev-parse --short HEAD)
+date = $(shell date +'%y%m%d-%H%M%S')
+IMG ?= podinfo-operator:${date}-${branch}-${commit}
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.29.0
 
@@ -131,6 +134,12 @@ ifndef ignore-not-found
   ignore-not-found = false
 endif
 
+.PHONY: helm-build
+helm-build: ## Build helm chart
+	$(KUSTOMIZE) build config/crd > helm/templates/crd.yaml
+	$(CONTROLLER_GEN) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+	rsync -av config/rbac/ helm/templates/ --exclude=serivce_account.yaml --exclude=kustomization.yaml
+	sed -i '' 's/system/{{ .Release.Namespace }}/g' helm/templates/*
 .PHONY: install
 install: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
 	$(KUSTOMIZE) build config/crd | $(KUBECTL) apply -f -

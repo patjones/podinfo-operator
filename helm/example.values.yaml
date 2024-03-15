@@ -1,0 +1,8 @@
+deployName: podinfo-operator
+podinfo-operator:
+  image: docker.io/patjones/podinfo-operator:240314-222550-main-55d3b06
+  replicaCount: "1"
+  resources:
+    memoryLimit: '64Mi'
+    cpuRequest: '100m'
+
