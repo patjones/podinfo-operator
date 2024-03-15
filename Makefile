@@ -135,12 +135,11 @@ ifndef ignore-not-found
   ignore-not-found = false
 endif
 
-.PHONY: helm-build
+.PHONY: helm-build-base
 helm-build: ## Build helm chart
-	$(KUSTOMIZE) build config/crd > helm/templates/crd.yaml
-	$(CONTROLLER_GEN) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
-	rsync -av config/rbac/ helm/templates/ --exclude=serivce_account.yaml --exclude=kustomization.yaml
-	sed -i '' 's/system/{{ .Release.Namespace }}/g' helm/templates/*
+	$(KUSTOMIZE) build config/default -o helm/templates
+	$(KUSTOMIZE) build config/crd -o helm/templates/crd.yaml
+	sed -i '' 's/podinfo-operator-system/{{ .Release.Namespace }}/g' helm/templates/*
 .PHONY: install
 install: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
 	$(KUSTOMIZE) build config/crd | $(KUBECTL) apply -f -
