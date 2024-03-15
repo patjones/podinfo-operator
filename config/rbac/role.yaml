@@ -5,7 +5,43 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - my.api.group
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - my.api.group.patjones.io
   resources:
   - myappresources
   verbs:
@@ -17,13 +53,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - my.api.group
+  - my.api.group.patjones.io
   resources:
   - myappresources/finalizers
   verbs:
   - update
 - apiGroups:
-  - my.api.group
+  - my.api.group.patjones.io
   resources:
   - myappresources/status
   verbs:

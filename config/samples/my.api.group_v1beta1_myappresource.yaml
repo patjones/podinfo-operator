@@ -1,4 +1,4 @@
-apiVersion: my.api.group.patjones.io/vbeta1
+apiVersion: my.api.group..patjones.io/v1beta1
 kind: MyAppResource
 metadata:
   labels:

@@ -30,7 +30,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	myapigroupv1alpha1 "github.com/patjones/podinfo-operator/api/v1alpha1"
+	myapigroupv1beta1 "github.com/patjones/podinfo-operator/api/v1beta1"
 	"github.com/pingcap/errors"
 )
 
@@ -40,7 +40,7 @@ type MyAppResourceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-func createDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *appsv1.Deployment {
+func createDeployment(myappresource myapigroupv1beta1.MyAppResource, r MyAppResourceReconciler) *appsv1.Deployment {
 	labels := map[string]string{
 		"app":                          myappresource.Name,
 		"app.kubernetes.io/name":       myappresource.Name,
@@ -110,7 +110,7 @@ func createDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyAppRes
 	return dep
 }
 
-func createService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *corev1.Service {
+func createService(myappresource myapigroupv1beta1.MyAppResource, r MyAppResourceReconciler) *corev1.Service {
 
 	labels := map[string]string{
 		"app":                          myappresource.Name,
@@ -139,7 +139,7 @@ func createService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResour
 	return svc
 }
 
-func createRedisDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *appsv1.Deployment {
+func createRedisDeployment(myappresource myapigroupv1beta1.MyAppResource, r MyAppResourceReconciler) *appsv1.Deployment {
 
 	labels := map[string]string{
 		"app":                          myappresource.Name + "-redis",
@@ -219,7 +219,7 @@ func createRedisDeployment(myappresource myapigroupv1alpha1.MyAppResource, r MyA
 	return dep
 }
 
-func createRedisService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *corev1.Service {
+func createRedisService(myappresource myapigroupv1beta1.MyAppResource, r MyAppResourceReconciler) *corev1.Service {
 
 	labels := map[string]string{
 		"app":                          myappresource.Name + "-redis",
@@ -248,7 +248,7 @@ func createRedisService(myappresource myapigroupv1alpha1.MyAppResource, r MyAppR
 	return svc
 }
 
-func createRedisConfigMap(myappresource myapigroupv1alpha1.MyAppResource, r MyAppResourceReconciler) *corev1.ConfigMap {
+func createRedisConfigMap(myappresource myapigroupv1beta1.MyAppResource, r MyAppResourceReconciler) *corev1.ConfigMap {
 	labels := map[string]string{
 		"app":                          myappresource.Name + "-redis",
 		"app.kubernetes.io/name":       myappresource.Name + "-redis",
@@ -274,9 +274,15 @@ func createRedisConfigMap(myappresource myapigroupv1alpha1.MyAppResource, r MyAp
 	return cm
 }
 
-//+kubebuilder:rbac:groups=my.api.group,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=my.api.group,resources=myappresources/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=my.api.group,resources=myappresources/finalizers,verbs=update
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/finalizers,verbs=update
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=my.api.group.patjones.io,resources=myappresources/finalizers,verbs=update
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;delete;create;update;patch
+// +kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;delete;create;update;patch
+// +kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;delete;create;update;patch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -290,7 +296,7 @@ func createRedisConfigMap(myappresource myapigroupv1alpha1.MyAppResource, r MyAp
 func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	var myappresource myapigroupv1alpha1.MyAppResource
+	var myappresource myapigroupv1beta1.MyAppResource
 	if err := r.Get(ctx, req.NamespacedName, &myappresource); err != nil {
 		log.Log.Error(err, "unable to fetch MyAppResource")
 		return ctrl.Result{}, client.IgnoreNotFound(err)
@@ -407,6 +413,6 @@ func (r *MyAppResourceReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 // SetupWithManager sets up the controller with the Manager.
 func (r *MyAppResourceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&myapigroupv1alpha1.MyAppResource{}).
+		For(&myapigroupv1beta1.MyAppResource{}).
 		Complete(r)
 }

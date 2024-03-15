@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: myappresources.my.api.group.patjones.io
+  name: myappresources.my.api.group..patjones.io
 spec:
-  group: my.api.group.patjones.io
+  group: my.api.group..patjones.io
   names:
     kind: MyAppResource
     listKind: MyAppResourceList

@@ -6,6 +6,7 @@ layout:
 - go.kubebuilder.io/v4
 projectName: podinfo-operator
 repo: github.com/patjones/podinfo-operator
+domain: patjones.io
 resources:
 - api:
     crdVersion: v1
@@ -13,6 +14,6 @@ resources:
   controller: true
   group: my.api.group
   kind: MyAppResource
-  path: github.com/patjones/podinfo-operator/api/v1alpha1
-  version: v1alpha1
+  path: github.com/patjones/podinfo-operator/api/v1beta1
+  version: v1beta1
 version: "3"

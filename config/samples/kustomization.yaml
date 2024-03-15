@@ -1,4 +1,4 @@
 ## Append samples of your project ##
 resources:
-- my.api.group_v1alpha1_myappresource.yaml
+- my.api.group.patjones.io_v1beta1_myappresource.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

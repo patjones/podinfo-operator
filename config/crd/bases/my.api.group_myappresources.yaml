@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: myappresources.my.api.group
+  name: myappresources.my.api.group.patjones.io
 spec:
-  group: my.api.group
+  group: my.api.group.patjones.io
   names:
     kind: MyAppResource
     listKind: MyAppResourceList
@@ -14,7 +14,7 @@ spec:
     singular: myappresource
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     schema:
       openAPIV3Schema:
         description: MyAppResource is the Schema for the myappresources API

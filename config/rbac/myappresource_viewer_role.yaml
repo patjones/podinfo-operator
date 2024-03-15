@@ -12,7 +12,7 @@ metadata:
   name: myappresource-viewer-role
 rules:
 - apiGroups:
-  - my.api.group
+  - my.api.group.patjones.io
   resources:
   - myappresources
   verbs:
@@ -20,7 +20,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - my.api.group
+  - my.api.group.patjones.io
   resources:
   - myappresources/status
   verbs:

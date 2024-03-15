@@ -3,7 +3,8 @@
 branch = $(shell git rev-parse --abbrev-ref HEAD)
 commit = $(shell git rev-parse --short HEAD)
 date = $(shell date +'%y%m%d-%H%M%S')
-IMG ?= podinfo-operator:${date}-${branch}-${commit}
+#IMG ?= podinfo-operator:${date}-${branch}-${commit}
+IMG ?= docker.io/patjones/podinfo-operator:2403567-150440-main-59f68c3
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.29.0
 
@@ -95,7 +96,7 @@ run: manifests generate fmt vet ## Run a controller from your host.
 # More info: https://docs.docker.com/develop/develop-images/build_enhancements/
 .PHONY: docker-build
 docker-build: ## Build docker image with the manager.
-	$(CONTAINER_TOOL) build -t ${IMG} .
+	$(CONTAINER_TOOL) build -t ${IMG} . --no-cache
 
 .PHONY: docker-push
 docker-push: ## Push docker image with the manager.
