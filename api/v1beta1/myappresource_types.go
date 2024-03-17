@@ -23,32 +23,32 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-type image struct {
+type Image struct {
 	Repository string `json:"repository"`
 	Tag        string `json:"tag"`
 }
 
-type resources struct {
+type Resources struct {
 	MemoryLimit string `json:"memoryLimit"`
-	CpuReuest   string `json:"cpuRequest"`
+	CpuRequest  string `json:"cpuRequest"`
 }
 
-type ui struct {
+type UI struct {
 	Color   string `json:"color"`
 	Message string `json:"message"`
 }
 
-type redis struct {
+type Redis struct {
 	Enabled bool `json:"enabled"`
 }
 
 // MyAppResourceSpec defines the desired state of MyAppResource
 type MyAppResourceSpec struct {
 	ReplicaCount int32     `json:"replicaCount"`
-	Image        image     `json:"image"`
-	Resources    resources `json:"resources"`
-	UI           ui        `json:"ui"`
-	Redis        redis     `json:"redis"`
+	Image        Image     `json:"image"`
+	Resources    Resources `json:"resources"`
+	UI           UI        `json:"ui"`
+	Redis        Redis     `json:"redis"`
 }
 
 // MyAppResourceStatus defines the observed state of MyAppResource

@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: docker.io/patjones/podinfo-operator
-  newTag: 2403567-150440-main-59f68c3
+  newTag: 240315-163858-main-afd2d56

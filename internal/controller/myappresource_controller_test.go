@@ -40,10 +40,10 @@ var _ = Describe("MyAppResource Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		myappresource := &myapigroupv1beta1.MyAppResource{}
 
 		BeforeEach(func() {
 			By("creating the custom resource for the Kind MyAppResource")
+			myappresource := &myapigroupv1beta1.MyAppResource{}
 			err := k8sClient.Get(ctx, typeNamespacedName, myappresource)
 			if err != nil && errors.IsNotFound(err) {
 				resource := &myapigroupv1beta1.MyAppResource{
@@ -51,7 +51,25 @@ var _ = Describe("MyAppResource Controller", func() {
 						Name:      resourceName,
 						Namespace: "default",
 					},
-					// TODO(user): Specify other spec details if needed.
+
+					Spec: myapigroupv1beta1.MyAppResourceSpec{
+						ReplicaCount: 1,
+						Image: myapigroupv1beta1.Image{
+							Repository: "ghcr.io/stefanprodan/podinfo",
+							Tag:        "latest",
+						},
+						Resources: myapigroupv1beta1.Resources{
+							MemoryLimit: "64Mi",
+							CpuRequest:  "100m",
+						},
+						UI: myapigroupv1beta1.UI{
+							Color:   "#34ebd8",
+							Message: "Hello from MyAppResource",
+						},
+						Redis: myapigroupv1beta1.Redis{
+							Enabled: true,
+						},
+					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
 			}

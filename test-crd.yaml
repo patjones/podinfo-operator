@@ -15,4 +15,4 @@ spec:
     color: "#34ebd8"
     message: "hullo"
   redis:
-    enabled: false
+    enabled: true

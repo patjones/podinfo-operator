@@ -95,7 +95,7 @@ func createDeployment(myappresource myapigroupv1beta1.MyAppResource, r MyAppReso
 									corev1.ResourceMemory: resource.MustParse(myappresource.Spec.Resources.MemoryLimit),
 								},
 								Requests: corev1.ResourceList{
-									corev1.ResourceCPU: resource.MustParse(myappresource.Spec.Resources.CpuReuest),
+									corev1.ResourceCPU: resource.MustParse(myappresource.Spec.Resources.CpuRequest),
 								},
 							},
 							Env: environmentVars,
