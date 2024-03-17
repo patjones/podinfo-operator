@@ -18,11 +18,16 @@ package controller
 
 import (
 	"context"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
+
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -72,6 +77,7 @@ var _ = Describe("MyAppResource Controller", func() {
 					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
+
 			}
 		})
 
@@ -95,8 +101,40 @@ var _ = Describe("MyAppResource Controller", func() {
 				NamespacedName: typeNamespacedName,
 			})
 			Expect(err).NotTo(HaveOccurred())
-			// TODO(user): Add more specific assertions depending on your controller's reconciliation logic.
-			// Example: If you expect a certain status condition after reconciliation, verify it here.
+
+			deployment := &appsv1.Deployment{}
+			By("creating the deployment resources correctly")
+			Eventually(
+				k8sClient.Get(ctx, client.ObjectKey{Name: "test-resource", Namespace: "default"}, deployment),
+				time.Second*10, time.Millisecond*500).Should(BeNil())
+			err = k8sClient.Get(ctx, typeNamespacedName, deployment)
+			Expect(err).NotTo(HaveOccurred())
+
+			service := &corev1.Service{}
+			By("creating the service resources correctly")
+			Eventually(
+				k8sClient.Get(ctx, client.ObjectKey{Name: "test-resource", Namespace: "default"}, service),
+				time.Second*10, time.Millisecond*500).Should(BeNil())
+			err = k8sClient.Get(ctx, typeNamespacedName, service)
+			Expect(err).NotTo(HaveOccurred())
+
+			deployment = &appsv1.Deployment{}
+			By("creating the deployment resources correctly")
+			Eventually(
+				k8sClient.Get(ctx, client.ObjectKey{Name: "test-resource-redis", Namespace: "default"}, deployment),
+				time.Second*10, time.Millisecond*500).Should(BeNil())
+			err = k8sClient.Get(ctx, typeNamespacedName, deployment)
+			Expect(err).NotTo(HaveOccurred())
+
+			service = &corev1.Service{}
+			By("creating the service resources correctly")
+			Eventually(
+				k8sClient.Get(ctx, client.ObjectKey{Name: "test-resource-redis", Namespace: "default"}, service),
+				time.Second*10, time.Millisecond*500).Should(BeNil())
+			err = k8sClient.Get(ctx, typeNamespacedName, service)
+			Expect(err).NotTo(HaveOccurred())
+
 		})
+
 	})
 })

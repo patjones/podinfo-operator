@@ -12,7 +12,7 @@ metadata:
   name: podinfo-operator-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ index .Values "podinfo-operator" "replica" }}
+  replicas: {{ index .Values "podinfo-operator" "replicas" }}
   selector:
     matchLabels:
       control-plane: controller-manager
