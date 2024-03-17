@@ -16,7 +16,7 @@ limitations under the License.
 
 // Package v1beta1 contains API Schema definitions for the my.api.group.patjones.io v1beta1 API group
 // +kubebuilder:object:generate=true
-// +groupName=my.api.group..patjones.io
+// +groupName=my.api.group.patjones.io
 package v1beta1
 
 import (

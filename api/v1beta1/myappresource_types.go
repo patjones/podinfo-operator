@@ -59,6 +59,7 @@ type MyAppResourceStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:storageversion
 
 // MyAppResource is the Schema for the myappresources API
 type MyAppResource struct {
