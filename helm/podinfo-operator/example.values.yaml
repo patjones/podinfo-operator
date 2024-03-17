@@ -1,6 +1,6 @@
 deployName: podinfo-operator
 podinfo-operator:
-  image: docker.io/patjones/podinfo-operator:2403567-150440-main-59f68c3
+  image: docker.io/patjones/podinfo-operator:240315-163858-main-afd2d56
   replicaCount: "1"
   controller:
     resources:
