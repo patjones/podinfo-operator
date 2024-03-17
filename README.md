@@ -1,8 +1,6 @@
 # podinfo-operator
-// TODO(user): Add simple overview of use/purpose
 
-## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+An operator to deploy [podinfo](https://github.com/stefanprodan/podinfo)
 
 ## Getting Started
 
@@ -13,6 +11,18 @@
 - Access to a Kubernetes v1.11.3+ cluster.
 
 ### To Deploy on the cluster
+
+#### Via Helm Chart
+
+```
+cd helm/podinfo-operator
+helm upgrade --install podinfo-operator . -f example.values.yaml --namespace=podinfo-operator --create-namespace
+
+```
+
+
+#### Kubebuilder Built-ins
+
 **Build and push your image to the location specified by `IMG`:**
 
 ```sh
