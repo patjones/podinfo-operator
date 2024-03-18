@@ -20,6 +20,34 @@ helm upgrade --install podinfo-operator . -f example.values.yaml --namespace=pod
 
 ```
 
+#### Via Make Targets
+```
+make install
+make deploy IMG=docker.io/patjones/podinfo-operator:240317-150819-main-521beb7
+```
+
+### Testing the Operator
+
+#### Installing the Test Object
+
+Once the operator is installed you can deploy a test `MyAppResource` object via the `test-crd.yaml` either in the repo root directory or in the `helm/` subdirectory
+```
+kubectl create namespace whatever
+kubectl apply -f test-crd.yaml
+```
+
+#### Testing podinfo
+```
+// assuming the test crd used is named `whatever` in the `whatever` ns
+kubectl port-forward service/whatever -n whatever 8080:80
+// navigate to http://localhost:8080/ in browser
+
+// redis testing
+curl -X PUT http://localhost:8080/cache/test-key-1 -v
+curl -X PUT http://localhost:8080/cache/test-key-2 -v
+//print keys in redis
+k exec -ti whatever-redis-{pod identifier} -n whatever -- sh -c "redis-cli -n 0 KEYS "*""
+```
 
 #### Kubebuilder Built-ins
 
